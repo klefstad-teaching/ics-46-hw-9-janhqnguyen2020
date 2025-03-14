@@ -7,7 +7,7 @@
 
 using namespace std;
 
-constexpr int INF = numeric_limits<int>::max();
+constexpr int INF = numeric_limits<int>::max();//final upperbound of int data type
 
 struct Edge {
     int src=0;
