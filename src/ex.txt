@@ -1,0 +1,33 @@
+// Finds shortest path from source vertex to all other vertices using Dijkstra's algorithm
+vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
+    int numVert = G.size();
+    vector<int> dist(numVert, INF);
+    vector<bool> visitedVert(numVert, false);
+    dist[source] = 0;
+    previous[source] = -1;
+
+    // Min heap: pair<distance, vertex>
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
+    minHeap.push({0, source});  // Push (distance, vertex)
+
+    while (!minHeap.empty()) {
+        auto [currentDist, currentEdge] = minHeap.top();
+        minHeap.pop();
+
+        if (visitedVert[currentEdge]) continue;
+        visitedVert[currentEdge] = true;
+
+        for (const Edge& edge : G[currentEdge]) {
+            int vert = edge.dst;
+            int weight = edge.weight;
+
+            if (!visitedVert[vert] && currentDist + weight < dist[vert]) {
+                dist[vert] = currentDist + weight;
+                previous[vert] = currentEdge;
+                minHeap.push({dist[vert], vert});  // Push (updated distance, vertex)
+            }
+        }
+    }
+
+    return dist; // Complexity: O((E + V) log V)
+}

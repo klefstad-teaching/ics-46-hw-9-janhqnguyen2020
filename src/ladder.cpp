@@ -1,9 +1,12 @@
 #include "../src/ladder.h"
+#include <fstream>
+
+#define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 
 //print error message
 void error(string word1, string word2, string msg)
 {
-    if(word1 == word2) cout << "[Error]: Word 1 (" << word1 << ") and Word 2 (" << word2 << ") are the same." << endl;
+    cout << "[ERROR for " << word1 << " and " << word2 << "]: " << msg << endl;
 }
 
 //checks if two words have an edit distance within d
@@ -28,7 +31,21 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 //loads words from a dictionary file into a set<string>
 void load_words(set<string> & word_list, const string& file_name)
 {
+    ifstream inFile(file_name);
+    string line;
 
+    if(!inFile)
+    {
+        cout << "[ERROR]: " << file_name << " cannot be opened" << endl;
+        return;
+    }
+
+    if(inFile.is_open())
+    {
+        while(getline(inFile, line)) word_list.insert(line);
+    }
+
+    inFile.close();
 }
 
 //prints found word ladder
@@ -37,9 +54,22 @@ void print_word_ladder(const vector<string>& ladder)
 
 }
 
-
 //tests correctness of generate_word_ladder using assertions
 void verify_word_ladder()
 {
+    set<string> wordList;
+
+    load_words(wordList, "words.txt");
+    my_assert(generate_word_ladder("cat", "dog", wordList).size() == 4);
+
+    my_assert(generate_word_ladder("marty", "curls", wordList).size() == 6);
+
+    my_assert(generate_word_ladder("code", "data", wordList).size() == 6);
+
+    my_assert(generate_word_ladder("work", "play", wordList).size() == 6);
+
+    my_assert(generate_word_ladder("sleep", "awake", wordList).size() == 8);
+
+    my_assert(generate_word_ladder("car", "cheat", wordList).size() == 4);
 
 }
