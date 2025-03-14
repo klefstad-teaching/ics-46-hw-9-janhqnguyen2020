@@ -1,33 +1,69 @@
-// Finds shortest path from source vertex to all other vertices using Dijkstra's algorithm
-vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
-    int numVert = G.size();
-    vector<int> dist(numVert, INF);
-    vector<bool> visitedVert(numVert, false);
-    dist[source] = 0;
-    previous[source] = -1;
+struct Node:
 
-    // Min heap: pair<distance, vertex>
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
-    minHeap.push({0, source});  // Push (distance, vertex)
+    int vertex
 
-    while (!minHeap.empty()) {
-        auto [currentDist, currentEdge] = minHeap.top();
-        minHeap.pop();
+    int weight
 
-        if (visitedVert[currentEdge]) continue;
-        visitedVert[currentEdge] = true;
 
-        for (const Edge& edge : G[currentEdge]) {
-            int vert = edge.dst;
-            int weight = edge.weight;
+struct Graph:
 
-            if (!visitedVert[vert] && currentDist + weight < dist[vert]) {
-                dist[vert] = currentDist + weight;
-                previous[vert] = currentEdge;
-                minHeap.push({dist[vert], vert});  // Push (updated distance, vertex)
-            }
-        }
-    }
+    list adjacencyList
 
-    return dist; // Complexity: O((E + V) log V)
-}
+    list distance
+
+    list previous
+
+    list visited
+
+
+function dijkstra(source, graph):
+
+    n = graph.adjacencyList.size()
+
+
+    graph.distance.resize(n, INT_MAX)
+
+    graph.previous.resize(n, -1)
+
+    graph.visited.resize(n, false)
+
+
+    priorityQueue pq
+
+    pq.push(Node(source, 0))
+
+    graph.distance[source] = 0
+
+
+    while !pq.empty():
+
+        current = pq.pop_top()
+
+
+        u = current.vertex
+
+
+        if graph.visited[u]:
+
+            continue
+
+
+        graph.visited[u] = true
+
+
+        for each neighbor in graph.adjacencyList[u]:
+
+            v = neighbor.vertex
+
+            weight = neighbor.weight
+
+
+            if !graph.visited[v] and graph.distance[u] + weight < graph.distance[v]:
+
+                graph.distance[v] = graph.distance[u] + weight
+
+                graph.previous[v] = u
+
+                pq.push(Node(v, graph.distance[v]))
+
+end function

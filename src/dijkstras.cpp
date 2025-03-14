@@ -9,19 +9,19 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     int numVert = G.size();
     vector<int> dist(numVert, INF);
     vector<bool> visitedVert(numVert, false);
-
-    dist[source] = 0;
-    previous[source] = -1;
+    previous.resize(numVert, -1);
 
     priority_queue<pair<int,int>> minHeap; //pair<weight,vertex>
-
     minHeap.push({source, 0});//starting and zero weight
+    dist[source] = 0;
+
     while(!minHeap.empty())
     {
-        int currentEdge = extract_shortest_path(dist, prev, );
+        int currentEdge = minHeap.top().first;
+        minHeap.pop();
 
-        if(visitedVert[currentEdge]) continue;
-        visitedVert[currentEdge] = true;
+        if(visitedVert[currentEdge]) continue;//if we already visited
+        visitedVert[currentEdge] = true;//if not visited yet
 
         for(const Edge& edge: G[currentEdge])
         {
