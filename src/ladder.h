@@ -1,8 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <queue>
-#include <set>
-#include <map>
+#include <iostream>//functionality for I/O
+#include <fstream>//file input and output operations
+#include <queue>//queue and priority queue for bfs and dijkstras
+#include <set>//collection of unique sorted elements
+#include <map>//maps keys to values, needed for prev nodes in dijkstras
 #include <vector>
 #include <string>
 #include <cmath>

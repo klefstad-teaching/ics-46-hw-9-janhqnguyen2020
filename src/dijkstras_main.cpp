@@ -1,0 +1,37 @@
+
+#include "../src/dijkstras.h"
+
+using namespace std;
+
+int main() {
+    // Define the graph as an adjacency list
+    int numVertices = 6;
+    Graph G;
+    G.resize(numVertices);
+
+    // Add weighted edges: Graph[src].push_back(Edge(dest, weight))
+    G[0].push_back(Edge(1, 4));
+    G[0].push_back(Edge(2, 1));
+    G[1].push_back(Edge(3, 1));
+    G[2].push_back(Edge(1, 2));
+    G[2].push_back(Edge(3, 5));
+    G[3].push_back(Edge(4, 3));
+    G[4].push_back(Edge(5, 2));
+
+    int source = 0;
+    vector<int> previous(numVertices, -1);
+    vector<int> distances = dijkstra_shortest_path(G, source, previous);
+
+    cout << "Shortest distances from source " << source << ":\n";
+    for (size_t i = 0; i < distances.size(); i++) {
+        cout << "To " << i << " -> " << (distances[i] == INF ? "INF" : to_string(distances[i])) << endl;
+    }
+
+    // Print shortest path to destination
+    int destination = 5;
+    vector<int> path = extract_shortest_path(distances,previous, destination);
+    cout << "\nShortest path from " << source << " to " << destination << ":\n";
+    print_path(path, path.size());
+
+    return 0;
+}
