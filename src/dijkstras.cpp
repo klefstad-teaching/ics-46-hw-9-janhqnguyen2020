@@ -11,17 +11,18 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     vector<bool> visitedVert(numVert, false);
     dist[source] = 0;
     previous[source] = -1;
-    priority_queue<pair<int,int>> minHeap; //pair<vertex,weight>
+    priority_queue<pair<int,int>> minHeap; //pair<weight,vertex>
 
-    minHeap.push({source,0});//starting and zero weight
+    minHeap.push({source, 0});//starting and zero weight
     while(!minHeap.empty())
     {
-        int currentEdge = extractVertMinWeight(minHeap);
+        int currentEdge = minHeap.top().first;
+        minHeap.pop();
 
         if(visitedVert[currentEdge]) continue;
         visitedVert[currentEdge] = true;
 
-        for(Edge edge: G[currentEdge])
+        for(const Edge& edge: G[currentEdge])
         {
             int vert = edge.dst;
             int weight = edge.weight;
@@ -38,21 +39,21 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     return dist;//complexiy is O((E+V)logV)
 }
 
-int extractVertMinWeight(priority_queue<pair<int,int>> minHeap)
+//extract vertex with smallest weight and removes
+int extractVertMinWeight(priority_queue<pair<int,int>>& minHeap, vector<int> dist)
 {
-    priority_queue<pair<int,int>> minHeapCopy = minHeap;
-
-    pair<int,int> lowestVertex = minHeapCopy.top();
-    minHeapCopy.pop();
-
-    while(!minHeapCopy.empty())
+    while(!minHeap.empty())
     {
-        pair<int, int> currentVertex = minHeapCopy.top();
-        minHeapCopy.pop();
-        if(lowestVertex.second > currentVertex.second) lowestVertex = currentVertex;
+        pair<int, int> minimumElement = minHeap.top();
+        minHeap.pop();
+
+        // Check if the current element has the correct distance
+        if (-minimumElement.first == dist[minimumElement.second]) {
+            return minimumElement.second;  // Valid vertex, return it
+        }
     }
 
-    return lowestVertex.first;
+    return -1;
 }
 
 
@@ -78,8 +79,8 @@ void print_path(const vector<int>& v, int total)
 {
     for(auto element: v)
     {
-        cout << element << " --> ";
+        cout << element << " ";
     }
-
-    cout << "Total: " << total << endl;
+    cout << "\n";
+    cout << "Total cost is " << total << endl;
 }
