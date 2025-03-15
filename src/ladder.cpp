@@ -66,7 +66,7 @@ bool is_adjacent(const string& word1, const string& word2)
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
-    /**
+
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
     
@@ -94,7 +94,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                 ladder_queue.push(new_ladder);
             }
         }
-    }*/
+    }
 
     return {};
 }
