@@ -26,7 +26,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     int difference = 0;
     int index1, index2;
     //cat dog
-    for(index1 = 0, index2 = 0;index1 < min(len1, len2);)
+    for(index1 = 0, index2 = 0;index1 < len1 && index2 < len2;)
     {
 
         if(str1[index1] != str2[index2])
@@ -42,6 +42,11 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
                 ++index1;
                 ++index2;
             }
+        }
+        else
+        {
+            ++index1;
+            ++index2;
         }
     }
 
@@ -62,8 +67,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 {
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
+    
     set<string> visited;
-
     visited.insert(begin_word);
 
     while(!ladder_queue.empty()) 

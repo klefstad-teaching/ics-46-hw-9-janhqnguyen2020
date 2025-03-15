@@ -1,36 +1,136 @@
-vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous)
-{
-    int numVert = G.size();
-    vector<int> dist(numVert, INF);
-    vector<bool> visitedVert(numVert, false);
-    previous.resize(numVert, -1);
-    
-    // Min heap with (distance, vertex)
-    priority_queue<pair<int, int>, vector<pair<int, int>>, CompareWeights> minHeap;
-    minHeap.push({source, 0});
-    dist[source] = 0;
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <set>
+#include <queue>
+#include <vector>
+#include <algorithm>
 
-    while (!minHeap.empty())
-    {
-        int currentEdge = minHeap.top().first; // Extract vertex with the smallest weight
-        minHeap.pop();
+using namespace std;
 
-        if (visitedVert[currentEdge]) continue;
-        visitedVert[currentEdge] = true;
+// Print error message
+void error(const string& word1, const string& word2, const string& msg) {
+    cout << "[ERROR for " << word1 << " and " << word2 << "]: " << msg << endl;
+}
 
-        for (const Edge& edge : G[currentEdge])
-        {
-            int vert = edge.dst;
-            int weight = edge.weight;
+// Check if two words have an edit distance within d
+bool edit_distance_within(const string& str1, const string& str2, int d) {
+    int len1 = str1.length(), len2 = str2.length();
 
-            if (!visitedVert[vert] && dist[currentEdge] + weight < dist[vert])
-            {
-                dist[vert] = dist[currentEdge] + weight;
-                previous[vert] = currentEdge;
-                minHeap.push({vert, dist[vert]});
+    if (abs(len1 - len2) > d) {
+        return false;
+    }
+
+    int difference = 0;
+    int index1 = 0, index2 = 0;
+
+    while (index1 < len1 && index2 < len2) {
+        if (str1[index1] != str2[index2]) {
+            ++difference;
+            if (difference > d) return false;
+
+            if (len1 > len2) ++index1; 
+            else if (len2 > len1) ++index2;
+            else {
+                ++index1;
+                ++index2;
+            }
+        } else {
+            ++index1;
+            ++index2;
+        }
+    }
+
+    // Add any remaining unmatched characters
+    difference += (len1 - index1) + (len2 - index2);
+
+    return difference <= d;
+}
+
+// Check if two words are adjacent in the word ladder graph
+bool is_adjacent(const string& word1, const string& word2) {
+    return edit_distance_within(word1, word2, 1);
+}
+
+// BFS to find the shortest word ladder
+vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
+    queue<vector<string>> ladder_queue;
+    ladder_queue.push({begin_word});
+
+    set<string> visited;
+    visited.insert(begin_word);
+
+    while (!ladder_queue.empty()) {
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
+
+        string last_word = ladder.back();
+
+        for (const string& word : word_list) {
+            if (is_adjacent(last_word, word) && visited.find(word) == visited.end()) {
+                visited.insert(word);
+
+                vector<string> new_ladder = ladder;
+                new_ladder.push_back(word);
+
+                if (word == end_word) {
+                    return new_ladder;
+                }
+
+                ladder_queue.push(new_ladder);
             }
         }
     }
 
-    return dist; // Complexity: O((E + V) log V)
+    return {};  // No ladder found
+}
+
+// Load words from dictionary file into a set
+void load_words(set<string>& word_list, const string& file_name) {
+    ifstream inFile(file_name);
+    string line;
+
+    if (!inFile) {
+        cout << "[ERROR]: Cannot open " << file_name << endl;
+        return;
+    }
+
+    while (getline(inFile, line)) {
+        transform(line.begin(), line.end(), line.begin(), ::tolower);
+        word_list.insert(line);
+    }
+    inFile.close();
+}
+
+// Print the word ladder
+void print_word_ladder(const vector<string>& ladder) {
+    if (ladder.empty()) {
+        cout << "No word ladder found." << endl;
+        return;
+    }
+
+    for (const string& word : ladder) {
+        cout << word << (word == ladder.back() ? "\n" : " → ");
+    }
+}
+
+int main() {
+    set<string> word_list;
+    load_words(word_list, "words.txt");
+
+    string start_word, end_word;
+    cout << "Enter start word: ";
+    cin >> start_word;
+    cout << "Enter end word: ";
+    cin >> end_word;
+
+    if (start_word == end_word) {
+        cout << "Start and end words must be different." << endl;
+        return 1;
+    }
+
+    vector<string> ladder = generate_word_ladder(start_word, end_word, word_list);
+    print_word_ladder(ladder);
+
+    return 0;
 }
