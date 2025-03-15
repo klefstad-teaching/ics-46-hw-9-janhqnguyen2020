@@ -72,29 +72,35 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     
     set<string> visited;
     visited.insert(begin_word);
-    /**
+    
     while(!ladder_queue.empty()) 
     {
-        vector<string> ladder = ladder_queue.front();
-        ladder_queue.pop();
+        int levelSize = ladder_queue.size();
+        set<string> levelVisited;
 
-        string last_word = ladder.back();
-
-        for(const string& word : word_list)
+        for(int index = 0; index < levelSize;++index)
         {
-            if(is_adjacent(last_word, word) && visited.find(word) == visited.end())
+            vector<string> ladder = ladder_queue.front();
+            ladder_queue.pop();
+            string lastWord = ladder.back();
+
+            for(const string& word: word_list)
             {
-                visited.insert(word);
-                
-                vector<string> new_ladder = ladder;
-                new_ladder.push_back(word);
+                if(is_adjacent(lastWord, word) && visited.find(word) == visited.end())
+                {
+                    vector<string> newLadder = ladder;
+                    newLadder.push_back(word);
 
-                if(word == end_word) return new_ladder;
+                    if(word == end_word) return newLadder;
 
-                ladder_queue.push(new_ladder);
+                    ladder_queue.push(newLadder);
+                    levelVisited.insert(word);
+                }
             }
         }
-    }*/
+
+        visited.insert(levelVisited.begin(), levelVisited.end());
+    }
 
     return {};
 }
@@ -111,13 +117,14 @@ void load_words(set<string> & word_list, const string& file_name)
         return;
     }
 
-    if(inFile.is_open())
-    {
-        while(getline(inFile, line))
+    while(getline(inFile, line))
+    {            
+        for(char &c : line) 
         {
-            for(char c : line) c = std::tolower(c);
-            word_list.insert(line);
+            c = std::tolower(c);
         }
+
+        word_list.insert(line);
     }
 
     inFile.close();
