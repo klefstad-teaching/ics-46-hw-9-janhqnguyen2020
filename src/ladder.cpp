@@ -11,7 +11,7 @@ void error(string word1, string word2, string msg)
 {
     cout << "[ERROR for " << word1 << " and " << word2 << "]: " << msg << endl;
 }
-
+/**
 //checks if two words have an edit distance within d
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
 {
@@ -53,15 +53,16 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     difference += (len1 - index1) + (len2 - index2);
 
     return difference <= d;
-}
+}*/
 
+/**
 //checks if two words are adjacent in word ladder graph
 bool is_adjacent(const string& word1, const string& word2)
 {
     return edit_distance_within(word1, word2, 1);
-}
+}*/
 
-
+/**
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
@@ -96,7 +97,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     return {};
 }
-
+*/
 //loads words from a dictionary file into a set<string>
 void load_words(set<string> & word_list, const string& file_name)
 {

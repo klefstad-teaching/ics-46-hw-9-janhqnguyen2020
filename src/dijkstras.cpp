@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <queue>
 #include <utility>
-
+/**
 //finds shortest path from source vertex to all other vertices using dijkstra's algorithm
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous)
 {
@@ -39,7 +39,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     }
 
     return dist;//complexiy is O((E+V)logV)
-}
+}*/
 
 //extracts shortest path from source vertex to a given destination
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination)
