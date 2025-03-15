@@ -67,8 +67,9 @@ bool is_adjacent(const string& word1, const string& word2)
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
 
-    queue<vector<string>> ladder_queue;
-    ladder_queue.push({begin_word});
+    queue<string> ladder_queue;
+    ladder_queue.push(begin_word);
+    vector<string> result;
     
     set<string> visited;
     visited.insert(begin_word);

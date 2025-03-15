@@ -8,6 +8,7 @@
 using namespace std;
 
 constexpr int INF = numeric_limits<int>::max();//final upperbound of int data type
+constexpr int UNDEFINED = -1;
 
 //weighted edge in a graph
 struct Edge {

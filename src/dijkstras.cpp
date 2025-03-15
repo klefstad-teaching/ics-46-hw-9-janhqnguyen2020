@@ -10,13 +10,13 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     int numVert = G.size();
     vector<int> dist(numVert, INF);
     vector<bool> visitedVert(numVert, false);
-    previous.resize(numVert, -1);
+    previous[source] = UNDEFINED;
     
     // Use a min heap
     priority_queue<pair<int, int>, vector<pair<int, int>>, CompareWeights> minHeap;
     minHeap.push({source, 0});//starting and zero weight
     dist[source] = 0;
-    /**
+    
     while(!minHeap.empty())
     {
         int currentEdge = minHeap.top().first; // Extract the vertex with the smallest weight
@@ -37,7 +37,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
                 minHeap.push({vert, dist[vert]});
             }
         }
-    }*/
+    }
 
     return dist;//complexiy is O((E+V)logV)
 }

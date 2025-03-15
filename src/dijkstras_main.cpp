@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-
+    /**
     cout << "MEOW MEOW\n";
     // Define the graph as an adjacency list
     int numVertices = 6;
@@ -35,7 +35,27 @@ int main() {
     cout << "\nShortest path from " << source << " to " << destination << ":\n";
     print_path(path, distances[destination]);
 
-    cout << "\nMEWO MEOW\n";
+    cout << "\nMEWO MEOW\n";*/
+
+    Graph g;
+    file_to_graph("src/small.txt", g);
+
+    for(auto edges: g)
+    {
+        for(auto edge: edges) cout << edge;
+    }
+    vector<int> prev;
+    prev.resize(g.size());
+
+    vector<int> dsp = dijkstra_shortest_path(g, 0, prev);
+
+    cout << endl;
+
+    vector<int> shortest = extract_shortest_path(dsp, prev, 2);
+
+    for(auto i: prev) cout << i << endl;
+
+    print_path(shortest, dsp[2]);
 
     return 0;
 }
