@@ -1,5 +1,6 @@
 #include "../src/ladder.h"
 #include <algorithm>
+#include <cctype>
 #include <cstddef>
 #include <fstream>
 
@@ -102,7 +103,7 @@ void load_words(set<string> & word_list, const string& file_name)
     {
         while(getline(inFile, line))
         {
-            transform(line.begin(), line.end(), line.begin(), ::tolower);
+            for(char c : line) c = std::tolower(c);
             word_list.insert(line);
         }
     }
@@ -115,14 +116,13 @@ void print_word_ladder(const vector<string>& ladder)
 {
     if(ladder.empty())
     {
-        cout << "Word Ladder is empty" << endl;
+        cout << "No word ladder found." << endl;
         return;
     }
-
+    cout << "Word Ladder found: ";
     for(size_t index = 0; index < ladder.size(); ++index)
     {
-        cout << ladder[index];
-        if(index != ladder.size() - 1) cout << " -> ";
+        cout << ladder[index] << " ";
     }
     cout << endl;
 }
