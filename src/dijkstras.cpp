@@ -2,7 +2,8 @@
 #include <algorithm>
 #include <queue>
 #include <utility>
-/**
+
+
 //finds shortest path from source vertex to all other vertices using dijkstra's algorithm
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous)
 {
@@ -15,7 +16,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     priority_queue<pair<int, int>, vector<pair<int, int>>, CompareWeights> minHeap;
     minHeap.push({source, 0});//starting and zero weight
     dist[source] = 0;
-
+    /**
     while(!minHeap.empty())
     {
         int currentEdge = minHeap.top().first; // Extract the vertex with the smallest weight
@@ -36,10 +37,10 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
                 minHeap.push({vert, dist[vert]});
             }
         }
-    }
+    }*/
 
     return dist;//complexiy is O((E+V)logV)
-}*/
+}
 
 //extracts shortest path from source vertex to a given destination
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination)
