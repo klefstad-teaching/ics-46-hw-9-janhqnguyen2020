@@ -4,6 +4,8 @@
 using namespace std;
 
 int main() {
+
+    cout << "MEOW MEOW\n";
     // Define the graph as an adjacency list
     int numVertices = 6;
     Graph G;
@@ -31,7 +33,9 @@ int main() {
     int destination = 5;
     vector<int> path = extract_shortest_path(distances,previous, destination);
     cout << "\nShortest path from " << source << " to " << destination << ":\n";
-    print_path(path, path.size());
+    print_path(path, distances[destination]);
+
+    cout << "\nMEWO MEOW\n";
 
     return 0;
 }

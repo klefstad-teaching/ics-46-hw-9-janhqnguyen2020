@@ -34,6 +34,15 @@ struct Graph : public vector<vector<Edge>> {
     int numVertices=0;
 };
 
+class CompareWeights
+{
+public: 
+    int operator()(const pair<int,int>& p1, const pair<int,int>& p2)
+    {
+        return p1.second > p2.second;
+    }
+};
+
 //reads a graph from input stream
 inline istream& operator>>(istream& in, Graph& G) {
     if (!(in >> G.numVertices))
@@ -57,4 +66,3 @@ inline void file_to_graph(const string& filename, Graph& G) {
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous);
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination);
 void print_path(const vector<int>& v, int total);
-int extractShortestWeight(priority_queue<pair<int, int>>& minHeap);
