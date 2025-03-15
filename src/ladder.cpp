@@ -23,27 +23,31 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         return false;
     }
 
-    int diff = 0;
+    int difference = 0;
     int index1, index2;
     //cat dog
     for(index1 = 0, index2 = 0;index1 < min(len1, len2);)
     {
+
         if(str1[index1] != str2[index2])
         {
-            ++diff;
+            ++difference;
 
-            if(index1 + 1 == len1 || index2 + 1 == len2) break;
-            ++index1;
-            ++index2;
+            if(difference > d) return false;//end early if difference is too great
+
+            if(len1 > len2) ++index1;//starting word is too long, delete needed
+            else if(len2 > len1) ++index2;//starting word too short, insert needed
+            else
+            {
+                ++index1;
+                ++index2;
+            }
         }
     }
 
-    if(len1 != len2)
-    {
-        diff += abs(len1 - len2);
-    }
+    difference += (len1 - index1) + (len2 - index2);
 
-    return diff <= d;
+    return difference <= d;
 }
 
 //checks if two words are adjacent in word ladder graph

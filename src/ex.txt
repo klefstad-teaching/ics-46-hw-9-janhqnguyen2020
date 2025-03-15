@@ -1,69 +1,34 @@
-struct Node:
-
-    int vertex
-
-    int weight
-
-
-struct Graph:
-
-    list adjacencyList
-
-    list distance
-
-    list previous
-
-    list visited
-
-
-function dijkstra(source, graph):
-
-    n = graph.adjacencyList.size()
-
-
-    graph.distance.resize(n, INT_MAX)
-
-    graph.previous.resize(n, -1)
-
-    graph.visited.resize(n, false)
-
-
-    priorityQueue pq
-
-    pq.push(Node(source, 0))
-
-    graph.distance[source] = 0
-
-
-    while !pq.empty():
-
-        current = pq.pop_top()
-
-
-        u = current.vertex
-
-
-        if graph.visited[u]:
-
-            continue
-
-
-        graph.visited[u] = true
-
-
-        for each neighbor in graph.adjacencyList[u]:
-
-            v = neighbor.vertex
-
-            weight = neighbor.weight
-
-
-            if !graph.visited[v] and graph.distance[u] + weight < graph.distance[v]:
-
-                graph.distance[v] = graph.distance[u] + weight
-
-                graph.previous[v] = u
-
-                pq.push(Node(v, graph.distance[v]))
-
-end function
+bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
+ {
+     int len1 = str1.length(), len2 = str2.length();
+ 
+     if(abs(len1 - len2) > d)
+     {
+         error(str1, str2, "Difference is too great");
+         return false;
+     }
+ 
+     int diff = 0;
+     int index1 = 0, index2 = 0;
+ 
+     while(index1 < len1 && index2 < len2)
+     {
+         if(str1[index1] != str2[index2])
+         {
+             ++diff;
+ 
+             if(diff > d) return false;
+ 
+             if(len1 > len2) ++index1;//deletion in str1
+             else if(len2 > len1) ++index2;//insertion in str1
+             else
+             {
+                 ++index1;
+                 ++index2;
+             }
+         }
+     }
+ 
+     diff += (len1 - index1) + (len2 - index2);
+     return diff <= d;
+ }
