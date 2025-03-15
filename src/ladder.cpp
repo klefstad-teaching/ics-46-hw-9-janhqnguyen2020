@@ -1,4 +1,6 @@
 #include "../src/ladder.h"
+#include <algorithm>
+#include <cstddef>
 #include <fstream>
 
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
@@ -12,20 +14,77 @@ void error(string word1, string word2, string msg)
 //checks if two words have an edit distance within d
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
 {
+    int len1 = str1.length(), len2 = str2.length();
 
+    if(abs(len1 - len2) > d)
+    {
+        error(str1, str2, "Difference is too great");
+        return false;
+    }
+
+    int diff = 0;
+    int index1 = 0, index2 = 0;
+
+    while(index1 < len1 && index2 < len2)
+    {
+        if(str1[index1] != str2[index2])
+        {
+            ++diff;
+
+            if(diff > d) return false;
+
+            if(len1 > len2) ++index1;//deletion in str1
+            else if(len2 > len1) ++index2;//insertion in str1
+            else
+            {
+                ++index1;
+                ++index2;
+            }
+        }
+    }
+
+    diff += (len1 - index1) + (len2 - index2);
+    return diff <= d;
 }
 
 //checks if two words are adjacent in word ladder graph
 bool is_adjacent(const string& word1, const string& word2)
 {
-
+    return edit_distance_within(word1, word2, 1);
 }
 
 
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
+    queue<vector<string>> ladder_queue;
+    ladder_queue.push({begin_word});
+    set<string> visited;
 
+    visited.insert(begin_word);
+
+    while(!ladder_queue.empty()) 
+    {
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
+        string last_word = ladder.back();
+
+        for(const string& word : word_list)
+        {
+            if(is_adjacent(last_word, word) && visited.find(word) == visited.end())
+            {
+                vector<string> new_ladder = ladder;
+                new_ladder.push_back(word);
+                visited.insert(word);
+
+                if(word == end_word) return new_ladder;
+
+                ladder_queue.push(new_ladder);
+            }
+        }
+    }
+
+    return {};
 }
 
 //loads words from a dictionary file into a set<string>
@@ -42,7 +101,11 @@ void load_words(set<string> & word_list, const string& file_name)
 
     if(inFile.is_open())
     {
-        while(getline(inFile, line)) word_list.insert(line);
+        while(getline(inFile, line))
+        {
+            transform(line.begin(), line.end(), line.begin(), ::tolower);
+            word_list.insert(line);
+        }
     }
 
     inFile.close();
@@ -51,7 +114,18 @@ void load_words(set<string> & word_list, const string& file_name)
 //prints found word ladder
 void print_word_ladder(const vector<string>& ladder)
 {
+    if(ladder.empty())
+    {
+        cout << "Word Ladder is empty" << endl;
+        return;
+    }
 
+    for(size_t index = 0; index < ladder.size(); ++index)
+    {
+        cout << ladder[index];
+        if(index != ladder.size() - 1) cout << " -> ";
+    }
+    cout << endl;
 }
 
 //tests correctness of generate_word_ladder using assertions
