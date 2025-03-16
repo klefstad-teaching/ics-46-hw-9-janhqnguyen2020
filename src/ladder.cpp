@@ -72,11 +72,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         return {};
     }*/
     
+    /**
     if(word_list.find(begin_word) == word_list.end() || word_list.find(end_word) == word_list.end())
     {
         error(begin_word, end_word, "The words are not in the dictionary.");
         return {};
-    }
+    }*/
     
     //declarations of what we need
     queue<vector<string>> ladderQueue;
