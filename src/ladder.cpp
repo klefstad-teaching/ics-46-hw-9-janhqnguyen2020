@@ -14,7 +14,7 @@ void error(string word1, string word2, string msg)
 //checks if two words have an edit distance within d
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
 {
-    int len1 = str1.length(), len2 = str2.length();
+    int len1 = str1.size(), len2 = str2.size();
 
     if(abs(len1 - len2) > d)
     {
@@ -49,7 +49,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         }
     }
 
-    difference += (len1 - index1) + (len2 - index2);
+    difference += abs(len1 - index1 - (len2 - index2));
 
     return difference <= d;
 }
