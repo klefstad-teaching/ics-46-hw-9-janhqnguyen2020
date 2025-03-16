@@ -66,20 +66,18 @@ bool is_adjacent(const string& word1, const string& word2)
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
-/**
-    queue<string> ladder_queue;
-    ladder_queue.push(begin_word);
-    vector<string> result;
+    queue<vector<string>> ladder_queue;
+    ladder_queue.push({begin_word});
     
     set<string> visited;
     visited.insert(begin_word);
     
     while(!ladder_queue.empty()) 
     {
-        int levelSize = ladder_queue.size();
-        set<string> levelVisited;
+        vector<string> ladder = ladder_queue.front();
+        ladder_queue.pop();
 
-        for(int index = 0; index < levelSize;++index)
+        for(const string& word : word_list)
         {
             vector<string> ladder = ladder_queue.front();
             ladder_queue.pop();
@@ -87,22 +85,24 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
             for(const string& word: word_list)
             {
-                if(is_adjacent(lastWord, word) && visited.find(word) == visited.end())
+                if(is_adjacent(lastWord, word))
                 {
-                    vector<string> newLadder = ladder;
-                    newLadder.push_back(word);
+                    if(visited.find(word) == visited.end())
+                    {
+                        visited.insert(word);
 
-                    if(word == end_word) return newLadder;
+                        vector<string> new_Ladder = ladder;
+                        new_Ladder.push_back(word);
 
-                    ladder_queue.push(newLadder);
-                    levelVisited.insert(word);
+                        if(word == end_word) return new_Ladder;
+
+                        ladder_queue.push(new_Ladder);
+                    }
                 }
             }
         }
 
-        visited.insert(levelVisited.begin(), levelVisited.end());
     }
-*/
     return {};
 }
 
