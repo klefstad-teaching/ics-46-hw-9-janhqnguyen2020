@@ -79,7 +79,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     }
     
     //declarations of what we need
-
+/**
     queue<vector<string>> ladderQueue;
     ladderQueue.push({begin_word});//since this is a queue of vector of strings, add the string as a vector
     
@@ -107,7 +107,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                 ladderQueue.push(newLadder);
             }
         }
-    }
+    }*/
 
     return {};//if no ladder is found, but this will never run
 }
