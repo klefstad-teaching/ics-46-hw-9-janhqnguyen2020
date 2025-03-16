@@ -1,5 +1,4 @@
 #include "../src/ladder.h"
-#include <algorithm>
 #include <cctype>
 #include <cstddef>
 #include <fstream>
@@ -66,6 +65,7 @@ bool is_adjacent(const string& word1, const string& word2)
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
+    /**
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
     
@@ -97,8 +97,45 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
         }
 
+    }*/
+
+    /*Givens: string word1, string word2, set
+    - All passed by constant reference(direct access to memory but we cannot alter address)*/
+    //declarations of what we need
+
+    queue<vector<string>> ladderQueue;
+    ladderQueue.push({begin_word});//since this is a queue of vector of strings, add the string as a vector
+    
+    set<string> visitedWords;
+    visitedWords.insert(begin_word);
+
+    while(!ladderQueue.empty())
+    {
+        vector<string> lastWord = ladderQueue.front();
+        ladderQueue.pop();//update the loop, ensure we get out eventually
+
+        string wordComparison = lastWord.back();//current comparsion since lastword is vector os strings
+
+        //loop thru given set of words
+        for(auto word : word_list)
+        {
+            if(is_adjacent(wordComparison, word))
+            {
+                if(visitedWords.find(word) == visitedWords.end())//not in visited
+                {
+                    visitedWords.insert(word);
+                    vector<string> newLadder = lastWord;
+
+                    newLadder.push_back(word);
+                    if(word == end_word) return newLadder;
+
+                    ladderQueue.push(newLadder);
+                }
+            }
+        }
     }
-    return {};
+    
+    return {};//if no ladder is found, but this will never run
 }
 
 //loads words from a dictionary file into a set<string>
