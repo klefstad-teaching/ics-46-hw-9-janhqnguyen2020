@@ -65,39 +65,6 @@ bool is_adjacent(const string& word1, const string& word2)
 //find shortest word ladder between two words using BFS
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
-    /**
-    queue<vector<string>> ladder_queue;
-    ladder_queue.push({begin_word});
-    
-    set<string> visited;
-    visited.insert(begin_word);
-    
-    while(!ladder_queue.empty()) 
-    {
-        vector<string> ladder = ladder_queue.front();
-        ladder_queue.pop();
-
-        string lastWord = ladder.back();
-        
-        for(const string& word : word_list)
-        {
-            if(is_adjacent(lastWord, word))
-            {
-                if(visited.find(word) == visited.end())
-                {
-                    visited.insert(word);
-
-                    vector<string> new_Ladder = ladder;
-                    new_Ladder.push_back(word);
-
-                    if(word == end_word) return new_Ladder;
-
-                    ladder_queue.push(new_Ladder);
-                }
-            }
-        }
-
-    }*/
 
     /*Givens: string word1, string word2, set
     - All passed by constant reference(direct access to memory but we cannot alter address)*/
@@ -117,18 +84,18 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     while(!ladderQueue.empty())
     {
-        vector<string> lastWord = ladderQueue.front();
+        vector<string> ladder = ladderQueue.front();
         ladderQueue.pop();//update the loop, ensure we get out eventually
 
-        string wordComparison = lastWord.back();//current comparsion since lastword is vector os strings
+        string wordComparison = ladder.back();//current comparsion since lastword is vector os strings
 
         //loop thru given set of words
-        for(const auto& word : word_list)
+        for(const string& word : word_list)
         {
             if(is_adjacent(wordComparison, word) && visitedWords.find(word) == visitedWords.end())
             {
                 visitedWords.insert(word);
-                vector<string> newLadder = lastWord;
+                vector<string> newLadder = ladder;
 
                 newLadder.push_back(word);
                 if(word == end_word) return newLadder;
