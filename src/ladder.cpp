@@ -119,7 +119,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         //loop thru given set of words
         for(auto word : word_list)
         {
-            if(is_adjacent(wordComparison, word))
+            if(is_adjacent(wordComparison, word) && word != lastWord.front())
             {
                 if(visitedWords.find(word) == visitedWords.end())//not in visited
                 {
@@ -134,7 +134,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
         }
     }
-    
+
     return {};//if no ladder is found, but this will never run
 }
 
