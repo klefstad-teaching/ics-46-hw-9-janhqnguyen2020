@@ -101,6 +101,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     /*Givens: string word1, string word2, set
     - All passed by constant reference(direct access to memory but we cannot alter address)*/
+    if(begin_word == end_word)
+    {
+        error(begin_word, end_word, "The words are the same.");
+        return {};
+    }
+    
     //declarations of what we need
 
     queue<vector<string>> ladderQueue;
@@ -117,9 +123,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         string wordComparison = lastWord.back();//current comparsion since lastword is vector os strings
 
         //loop thru given set of words
-        for(auto word : word_list)
+        for(const auto& word : word_list)
         {
-            if(is_adjacent(wordComparison, word) && word != lastWord.front())
+            if(is_adjacent(wordComparison, word))
             {
                 if(visitedWords.find(word) == visitedWords.end())//not in visited
                 {
