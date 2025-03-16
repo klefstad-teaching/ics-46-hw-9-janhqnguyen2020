@@ -25,32 +25,30 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     int difference = 0;
     int index1 = 0, index2 = 0;
     //cat dog
-    while(index1 < len1 && index2 < len2)
+    while(index1 < len1 || index2 < len2)
     {
 
-        if(str1[index1] != str2[index2])
+        if(index1 < len1 && index2 < len2 && str1[index1] == str2[index2])
+        {
+            ++index1;
+            ++index2;
+        }
+        else 
         {
             ++difference;
 
             if(difference > d) return false;//end early if difference is too great
 
-            if(len1 > len2) ++index1;//starting word is too long, delete needed
-            else if(len2 > len1) ++index2;//starting word too short, insert needed
-            else
+            if(index1 < len1 && index2 < len2) //substitute
             {
-                ++index1;
+                ++index1;//starting word is too long, delete needed
                 ++index2;
             }
-        }
-        else
-        {
-            ++index1;
-            ++index2;
+            else if(index1 < len1) ++index1;//starting word too long, delete
+            else ++index2;//nsertion
         }
     }
-
-    difference += abs((len1 - index1) - (len2 - index2));
-
+    
     return difference <= d;
 }
 
