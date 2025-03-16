@@ -68,15 +68,15 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
     /*Givens: string word1, string word2, set
     - All passed by constant reference(direct access to memory but we cannot alter address)*/
-    if(word_list.find(begin_word) == word_list.end() || word_list.find(end_word) == word_list.end())
+     if(begin_word == end_word)
     {
-        error(begin_word, end_word, "The words are not in the dictionary.");
+        error(begin_word, end_word, "The words are the same.");
         return {};
     }
     
-    if(begin_word == end_word)
+    if(word_list.find(begin_word) == word_list.end() || word_list.find(end_word) == word_list.end())
     {
-        error(begin_word, end_word, "The words are the same.");
+        error(begin_word, end_word, "The words are not in the dictionary.");
         return {};
     }
     
