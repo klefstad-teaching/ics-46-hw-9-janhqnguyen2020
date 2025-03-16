@@ -49,7 +49,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         }
     }
 
-    difference += abs(len1 - index1 - (len2 - index2));
+    difference += abs((len1 - index1) - (len2 - index2));
 
     return difference <= d;
 }
@@ -122,10 +122,7 @@ void load_words(set<string> & word_list, const string& file_name)
 
     while(getline(inFile, line))
     {            
-        for(char &c : line) 
-        {
-            c = std::tolower(c);
-        }
+        line[0] = std::tolower(line[0]);
 
         word_list.insert(line);
     }
