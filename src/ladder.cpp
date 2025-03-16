@@ -18,7 +18,6 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
     if(abs(len1 - len2) > d)
     {
-        error(str1, str2, "Difference is too great");
         return false;
     }
 
@@ -80,7 +79,6 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     }
     
     //declarations of what we need
-/**
     queue<vector<string>> ladderQueue;
     ladderQueue.push({begin_word});//since this is a queue of vector of strings, add the string as a vector
     
@@ -108,7 +106,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                 ladderQueue.push(newLadder);
             }
         }
-    }*/
+    }
 
     return {};//if no ladder is found, but this will never run
 }
